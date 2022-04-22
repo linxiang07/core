@@ -209,22 +209,27 @@ export function createAppAPI<HostElement>(
 
       set config(v) {
         if (__DEV__) {
+          // 不予许设置
           warn(
             `app.config cannot be replaced. Modify individual options instead.`
           )
         }
       },
-
+      // 注册插件
       use(plugin: Plugin, ...options: any[]) {
+        // 插件已经被应用
         if (installedPlugins.has(plugin)) {
           __DEV__ && warn(`Plugin has already been applied to target app.`)
         } else if (plugin && isFunction(plugin.install)) {
+          // 两种注册格式
           installedPlugins.add(plugin)
           plugin.install(app, ...options)
         } else if (isFunction(plugin)) {
+          // 两种注册格式
           installedPlugins.add(plugin)
           plugin(app, ...options)
         } else if (__DEV__) {
+          // 无效
           warn(
             `A plugin must either be a function or an object with an "install" ` +
               `function.`
@@ -235,6 +240,7 @@ export function createAppAPI<HostElement>(
 
       mixin(mixin: ComponentOptions) {
         if (__FEATURE_OPTIONS_API__) {
+          // 是否挂载 mixin 如果未挂载就挂载，已挂载就报错
           if (!context.mixins.includes(mixin)) {
             context.mixins.push(mixin)
           } else if (__DEV__) {
@@ -248,7 +254,7 @@ export function createAppAPI<HostElement>(
         }
         return app
       },
-
+      // 注册全局组件
       component(name: string, component?: Component): any {
         if (__DEV__) {
           validateComponentName(name, context.config)
@@ -262,7 +268,7 @@ export function createAppAPI<HostElement>(
         context.components[name] = component
         return app
       },
-
+      // 注册指令
       directive(name: string, directive?: Directive) {
         if (__DEV__) {
           validateDirectiveName(name)
@@ -277,7 +283,7 @@ export function createAppAPI<HostElement>(
         context.directives[name] = directive
         return app
       },
-
+      // 挂载组件
       mount(
         rootContainer: HostElement,
         isHydrate?: boolean,
@@ -288,10 +294,14 @@ export function createAppAPI<HostElement>(
             rootComponent as ConcreteComponent,
             rootProps
           )
+          
+          // 在根 VNode 上存储应用程序上下文
           // store app context on the root VNode.
+          // 这将在初始装载时的根实例上设置。
           // this will be set on the root instance on initial mount.
           vnode.appContext = context
 
+          // 根重新加载
           // HMR root reload
           if (__DEV__) {
             context.reload = () => {

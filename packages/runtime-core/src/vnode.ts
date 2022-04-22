@@ -503,6 +503,7 @@ function _createVNode(
   }
 
   if (isVNode(type)) {
+    // createVNode接收现有vnode。这种情况在以下情况下发生
     // createVNode receiving an existing vnode. This happens in cases like
     // <component :is="vnode"/>
     // #2078 make sure to merge refs during the clone instead of overwriting it
@@ -513,6 +514,7 @@ function _createVNode(
     return cloned
   }
 
+  // 类组件规范化
   // class component normalization.
   if (isClassComponent(type)) {
     type = type.__vccOpts

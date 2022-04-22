@@ -64,6 +64,8 @@ export const hydrate = ((...args) => {
 }) as RootHydrateFunction
 
 export const createApp = ((...args) => {
+  // debugger
+  // 确保渲染之后创建App
   const app = ensureRenderer().createApp(...args)
 
   if (__DEV__) {
@@ -73,10 +75,13 @@ export const createApp = ((...args) => {
 
   const { mount } = app
   app.mount = (containerOrSelector: Element | ShadowRoot | string): any => {
+    debugger
     const container = normalizeContainer(containerOrSelector)
     if (!container) return
 
+    // setup()
     const component = app._component
+    // 不是函数、没有render方法、没有template模版
     if (!isFunction(component) && !component.render && !component.template) {
       // __UNSAFE__
       // Reason: potential execution of JS expressions in in-DOM template.
