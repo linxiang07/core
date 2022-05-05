@@ -13,16 +13,20 @@
     <script>
         Vue.createApp({
             setup() {
-                // const msg = Vue.ref('hello');
+                const msg = Vue.ref(0);
                 // const msgMore = Vue.computed(() => msg.value + 'world');
                 // return () => Vue.h('div', null, 'hello world setup')
+                const click = () => {
+                    msg.value ++ 
+                }
+                return { click, msg };
             },
             template: `
-                <div>hello world template</div>
+                <div>
+                    {{ msg }} template
+                    <button @click="click">点击</button>
+                </div>
             `,
-            render() {
-                return Vue.h('div', null, 'hello world render')
-            }
         }).mount('#app')
     </script>
 </body>

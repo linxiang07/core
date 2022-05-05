@@ -952,6 +952,7 @@ function baseCreateRenderer(
     }
   }
 
+  // 块间的快速通道
   // The fast path for blocks.
   const patchBlockChildren: PatchBlockChildrenFn = (
     oldChildren,

@@ -64,8 +64,7 @@ export const hydrate = ((...args) => {
 }) as RootHydrateFunction
 
 export const createApp = ((...args) => {
-  // debugger
-  // 确保渲染之后创建App
+  // 确保渲染之后创建App createAppAPI(render, hydrate)()
   const app = ensureRenderer().createApp(...args)
 
   if (__DEV__) {
@@ -75,7 +74,8 @@ export const createApp = ((...args) => {
 
   const { mount } = app
   app.mount = (containerOrSelector: Element | ShadowRoot | string): any => {
-    debugger
+    // debugger
+    // document.querySelector 的包装
     const container = normalizeContainer(containerOrSelector)
     if (!container) return
 
@@ -83,11 +83,15 @@ export const createApp = ((...args) => {
     const component = app._component
     // 不是函数、没有render方法、没有template模版
     if (!isFunction(component) && !component.render && !component.template) {
+      // 不安全
       // __UNSAFE__
+      // 原因：可能会在 DOM 模板中执行JS表达式。
       // Reason: potential execution of JS expressions in in-DOM template.
+      // 用户必须确保 DOM 中的模板是可信的。如果它是由服务器描述的，则模板不应包含任何用户数据。
       // The user must make sure the in-DOM template is trusted. If it's
       // rendered by the server, the template should not contain any user data.
       component.template = container.innerHTML
+      // 2.x 兼容性检查
       // 2.x compat check
       if (__COMPAT__ && __DEV__) {
         for (let i = 0; i < container.attributes.length; i++) {
@@ -103,6 +107,7 @@ export const createApp = ((...args) => {
       }
     }
 
+    // 安装前清除内容
     // clear content before mounting
     container.innerHTML = ''
     const proxy = mount(container, false, container instanceof SVGElement)

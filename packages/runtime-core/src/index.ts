@@ -2,10 +2,12 @@
 
 export const version = __VERSION__
 export {
+  // 核心
   // core
   reactive,
   ref,
   readonly,
+  // 实用函数
   // utilities
   unref,
   proxyRefs,
@@ -16,6 +18,7 @@ export {
   isReactive,
   isReadonly,
   isShallow,
+  // 高级用法
   // advanced
   customRef,
   triggerRef,
@@ -24,10 +27,12 @@ export {
   shallowReadonly,
   markRaw,
   toRaw,
+  // 副作用
   // effect
   effect,
   stop,
   ReactiveEffect,
+  // 副作用 范围
   // effect scope
   effectScope,
   EffectScope,
