@@ -91,7 +91,7 @@ export { h } from './h'
 // Advanced render function utilities
 export { createVNode, cloneVNode, mergeProps, isVNode } from './vnode'
 // VNode types
-export { Fragment, Text, Comment, Static } from './vnode'
+export { Fragment, Text, Comment, Static, VNodeRef } from './vnode'
 // Built-in components
 export { Teleport, TeleportProps } from './components/Teleport'
 export { Suspense, SuspenseProps } from './components/Suspense'
@@ -222,6 +222,7 @@ export {
   ComponentOptionsWithArrayProps,
   ComponentCustomOptions,
   ComponentOptionsBase,
+  ComponentProvideOptions,
   RenderFunction,
   MethodOptions,
   ComputedOptions,
@@ -329,7 +330,7 @@ const _ssrUtils = {
 }
 
 /**
- * SSR utils for \@vue/server-renderer. Only exposed in cjs builds.
+ * SSR utils for \@vue/server-renderer. Only exposed in ssr-possible builds.
  * @internal
  */
 export const ssrUtils = (__SSR__ ? _ssrUtils : null) as typeof _ssrUtils
